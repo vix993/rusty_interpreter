@@ -1,4 +1,4 @@
-# rusty_interpreter
+# Rusty Interpreter
 
 The beginning of a ByteCode interpreter built with rust.
 
