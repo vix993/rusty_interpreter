@@ -1,6 +1,6 @@
 use crate::types::{ByteCode, Program, ProgramError, Result, Variable};
 
-macro_rules! make_op {
+macro_rules! do_op {
     ($code:expr, $op:tt) => {{
 		// pop two last variables in the stack
         if let Some(a) = $code.stack.pop() {
@@ -31,7 +31,7 @@ pub fn interpret(bytecodes: Vec<ByteCode>) -> Result<Variable> {
                     value: i,
                 });
                 None
-            }
+            },
             ByteCode::WriteVar(c) => {
                 let loaded_value = code.stack.pop();
                 if let Some(v) = loaded_value {
@@ -41,7 +41,7 @@ pub fn interpret(bytecodes: Vec<ByteCode>) -> Result<Variable> {
                     })
                 }
                 None
-            }
+            },
             ByteCode::ReadVar(c) => {
                 let read_value = code.stack.iter().find(|&&x| x.variable == Some(c));
                 if let Some(v) = read_value {
@@ -52,11 +52,11 @@ pub fn interpret(bytecodes: Vec<ByteCode>) -> Result<Variable> {
                     })
                 }
                 None
-            }
-            ByteCode::Mul => make_op!(code, *),
-			ByteCode::Div => make_op!(code, /),
-            ByteCode::Add => make_op!(code, +),
-			ByteCode::Sub => make_op!(code, -),
+            },
+            ByteCode::Mul => do_op!(code, *),
+			ByteCode::Div => do_op!(code, /),
+            ByteCode::Add => do_op!(code, +),
+			ByteCode::Sub => do_op!(code, -),
             ByteCode::Return => break,
         } {
             return Err(err);
