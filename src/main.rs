@@ -10,7 +10,7 @@ pub enum ByteCode {
     Return,
 }
 
-#[derive(Copy, Clone)]
+#[derive(Copy, Clone, Debug)]
 pub struct Variable {
     variable: Option<char>,
     value: i64,
@@ -118,6 +118,8 @@ mod interpreter_tests {
         ];
 
         let test_write_value_result = interpret(test_write_value).unwrap();
+
+        assert!(interpret(vec![Return]).is_err());
 
         assert_eq!(interpret(test_load_value_and_return).unwrap().value, 2);
         assert_eq!(
