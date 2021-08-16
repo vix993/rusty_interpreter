@@ -1,33 +1,4 @@
-use std::result;
-
-#[derive(Copy, Clone)]
-pub enum ByteCode {
-    LoadVal(i64),
-    WriteVar(char),
-    ReadVar(char),
-    Add,
-    Mul,
-    Return,
-}
-
-#[derive(Copy, Clone, Debug)]
-pub struct Variable {
-    variable: Option<char>,
-    value: i64,
-}
-
-#[derive(Clone)]
-pub struct Program {
-    bytecodes: Vec<ByteCode>,
-    stack: Vec<Variable>,
-}
-
-#[derive(Debug)]
-pub enum ProgramError {
-    StackUnderflow,
-}
-
-type Result<T> = result::Result<T, ProgramError>;
+use crate::types::{ByteCode, Program, ProgramError, Result, Variable};
 
 macro_rules! make_op {
     ($code:expr, $op:tt) => {{
@@ -92,48 +63,4 @@ pub fn interpret(bytecodes: Vec<ByteCode>) -> Result<Variable> {
     } else {
         Err(ProgramError::StackUnderflow)
     }
-}
-
-#[cfg(test)]
-mod interpreter_tests {
-    use super::*;
-
-    #[test]
-    fn basic() {
-        use ByteCode::*;
-        let test_load_value_and_return = vec![LoadVal(2), Return];
-        let test_load_two_values_multiply_return = vec![LoadVal(2), LoadVal(3), Mul, Return];
-        let test_write_value = vec![LoadVal(2), WriteVar('c'), Return];
-        let test_arithmetic_written_values = vec![
-            LoadVal(1),
-            WriteVar('x'),
-            LoadVal(2),
-            WriteVar('y'),
-            ReadVar('x'),
-            LoadVal(1),
-            Add,
-            ReadVar('y'),
-            Mul,
-            Return,
-        ];
-
-        let test_write_value_result = interpret(test_write_value).unwrap();
-
-        assert!(interpret(vec![Return]).is_err());
-
-        assert_eq!(interpret(test_load_value_and_return).unwrap().value, 2);
-        assert_eq!(
-            interpret(test_load_two_values_multiply_return)
-                .unwrap()
-                .value,
-            6
-        );
-        assert_eq!(test_write_value_result.variable, Some('c'));
-        assert_eq!(test_write_value_result.value, 2);
-        assert_eq!(interpret(test_arithmetic_written_values).unwrap().value, 4);
-    }
-}
-
-fn main() {
-    println!("Hello, world!");
 }
