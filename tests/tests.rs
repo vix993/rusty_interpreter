@@ -49,6 +49,48 @@ mod interpreter_tests {
     }
 
     #[test]
+    fn test_load_two_values_divide_return() {
+        use ByteCode::*;
+
+        let a = 4;
+        let b = 2;
+
+        let test_load_two_values_multiply_return = vec![LoadVal(a), LoadVal(b), Div, Return];
+
+        assert_eq!(
+            interpret(test_load_two_values_multiply_return)
+                .unwrap()
+                .value,
+            a / b,
+            "Should return {} / {} = {}",
+            a,
+            b,
+            a / b
+        );
+    }
+
+    #[test]
+    fn test_load_two_values_subtract_return() {
+        use ByteCode::*;
+
+        let a = 4;
+        let b = 2;
+
+        let test_load_two_values_multiply_return = vec![LoadVal(a), LoadVal(b), Sub, Return];
+
+        assert_eq!(
+            interpret(test_load_two_values_multiply_return)
+                .unwrap()
+                .value,
+            a - b,
+            "Should return {} - {} = {}",
+            a,
+            b,
+            a - b
+        );
+    }
+
+    #[test]
     fn test_write_value() {
         use ByteCode::*;
 
@@ -96,13 +138,17 @@ mod interpreter_tests {
             ReadVar('y'),
             // multiply -> 2 * 2 = 4 (new value in stack)
             Mul,
+            // load 3
+            LoadVal(3),
+            // subtract -> 3 - 4 = 1 (new value in stack)
+            Sub,
             // Return the result
             Return,
         ];
 
         assert_eq!(
             interpret(test_arithmetic_written_values).unwrap().value,
-            4,
+            1,
             "Should apply various arithmetic operations using the memory on the stack and then return the result"
         );
     }

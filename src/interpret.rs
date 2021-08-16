@@ -2,8 +2,10 @@ use crate::types::{ByteCode, Program, ProgramError, Result, Variable};
 
 macro_rules! make_op {
     ($code:expr, $op:tt) => {{
+		// pop two last variables in the stack
         if let Some(a) = $code.stack.pop() {
             if let Some(b) = $code.stack.pop() {
+				// push the result of the operation to stack
                 $code.stack.push(Variable {
                     variable: None,
                     value: (b.value $op a.value),
@@ -20,6 +22,7 @@ pub fn interpret(bytecodes: Vec<ByteCode>) -> Result<Variable> {
         stack: Vec::new(),
     };
 
+	// iterate and match the bytecode vector
     for op in code.bytecodes {
         if let Some(err) = match op {
             ByteCode::LoadVal(i) => {
@@ -51,7 +54,9 @@ pub fn interpret(bytecodes: Vec<ByteCode>) -> Result<Variable> {
                 None
             }
             ByteCode::Mul => make_op!(code, *),
+			ByteCode::Div => make_op!(code, /),
             ByteCode::Add => make_op!(code, +),
+			ByteCode::Sub => make_op!(code, -),
             ByteCode::Return => break,
         } {
             return Err(err);
