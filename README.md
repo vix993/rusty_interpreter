@@ -15,7 +15,6 @@ This project was the result of an online challenge.
 
 I was given the following prompt:
 
-(1)
     You are a TA at a university, and you want to evaluate your student’s homework
     without executing their (untrusted) code. You decide to write a small
     web-service that takes bytecode as input, and interprets the results.
