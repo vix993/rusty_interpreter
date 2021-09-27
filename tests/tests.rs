@@ -140,7 +140,7 @@ mod interpreter_tests {
             Mul,
             // load 3
             LoadVal(3),
-            // subtract -> 3 - 4 = 1 (new value in stack)
+            // subtract -> 4 - 3 = 1 (new value in stack)
             Sub,
             // Return the result
             Return,
