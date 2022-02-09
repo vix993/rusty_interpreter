@@ -14,6 +14,7 @@ Then you can run `cargo build`, `cargo check`, `cargo test` and `cargo run` in t
 This project was the result of an online challenge.
 
 I was given the following prompt:
+<img src="Screenshot 2022-02-08 at 21.58.08.png" alt="prompt for challenge" />
 
     You are a TA at a university, and you want to evaluate your student’s homework
     without executing their (untrusted) code. You decide to write a small
